@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pro.sky.courseWork2.domain.Question;
 import pro.sky.courseWork2.exceptions.BadAmountException;
 import pro.sky.courseWork2.services.ExaminerServiceImpl;
-import java.util.Set;
+import java.util.List;
 
 @RestController
 @RequestMapping("/exam")
@@ -19,11 +19,12 @@ public class ExamController {
     }
 
     @GetMapping(path = "/get")
-    public Set<Question> getQuestions(@RequestParam("amount") Integer amount) {
+    public List<Question> getQuestions(@RequestParam("amount") Integer amount) {
         try {
             return examinerService.getQuestions(amount);
         } catch (BadAmountException e) {
-            throw new BadAmountException();
+            System.out.println("Пользователь ввёл некоректное число в запросе!");
+            throw e;
         }
     }
 }

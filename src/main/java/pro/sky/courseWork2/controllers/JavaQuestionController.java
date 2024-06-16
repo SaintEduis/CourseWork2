@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pro.sky.courseWork2.domain.Question;
+import pro.sky.courseWork2.exceptions.BadQuestionRequestException;
 import pro.sky.courseWork2.exceptions.QuestionAlreadyAddedException;
 import pro.sky.courseWork2.exceptions.QuestionIsNotExistsException;
 import pro.sky.courseWork2.exceptions.QuestionRepositoryIsEmptyException;
@@ -26,7 +27,11 @@ public class JavaQuestionController {
             javaQuestionService.addQuestion(question, answer);
             return "Вопрос успешно добавлен!";
         } catch (QuestionAlreadyAddedException e) {
-            throw new QuestionAlreadyAddedException();
+            System.out.println("Пользователь хочет добавить уже существующий вопрос!");
+            throw e;
+        } catch (BadQuestionRequestException e) {
+            System.out.println("Пользователь ввёл некорректые данные!");
+            throw e;
         }
     }
 
@@ -36,7 +41,11 @@ public class JavaQuestionController {
             javaQuestionService.removeQuestion(question);
             return "Вопрос успешно удалён!";
         } catch (QuestionIsNotExistsException e) {
-            throw new QuestionIsNotExistsException();
+            System.out.println("Пользователь пытается удалить несуществующий вопрос!");
+            throw e;
+        } catch (BadQuestionRequestException e) {
+            System.out.println("Пользователь ввёл некорректые данные!");
+            throw e;
         }
     }
 
@@ -45,7 +54,8 @@ public class JavaQuestionController {
         try {
             return javaQuestionService.getAll();
         } catch (QuestionRepositoryIsEmptyException e) {
-            throw new QuestionRepositoryIsEmptyException();
+            System.out.println("Пользователь пытается получить сотрудников из пустого списка!");
+            throw e;
         }
     }
 }
